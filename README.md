@@ -1,5 +1,7 @@
 To run, follow:
 ```
+git clone git@github.com:t3rmin4l/currencyx.git
+cd currencyx
 cp currencyX/.env.example currencyX/.env
 cp services/.env.example services/.env
 cd services

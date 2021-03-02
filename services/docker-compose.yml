@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  # PHP Service
+  currencyX_app:
+    build:
+      context: ../currencyX
+      dockerfile: Dockerfile
+    image: currencyx/php
+    container_name: currencyX_app
+    working_dir: /var/www
+    volumes:
+      - ../currencyX:/var/www
+      - ../currencyX/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - currencyX-network
+
+  # Nginx Service
+  currencyX_webserver:
+    image: nginx:alpine
+    container_name: currencyX_webserver
+    ports:
+      - "127.0.0.1:6256:80"
+    volumes:
+      - ../currencyX:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - currencyX-network
+
+  # MySQL Service
+  currencyX_db:
+    image: mysql:5.7.22
+    container_name: currencyX_db
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    command: ['mysqld', '--character-set-server=utf8', '--collation-server=utf8_bin']
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - currencyX-network
+
+# Docker Networks
+networks:
+  currencyX-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  dbdata:
+
