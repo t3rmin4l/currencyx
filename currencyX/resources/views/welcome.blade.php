@@ -76,7 +76,7 @@
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script>
         $(function() {
-            let last_price = 0;
+            let lastPrice = 0;
             function delay(callback, ms) {
                 var timer = 0;
                 return function() {
@@ -87,10 +87,10 @@
                     }, ms || 0);
                 };
             }
-            function convert() {
+            function convert(ignoreLastPrice) {
                 let amount = parseFloat($("input[name=amount]").val());
-                if (last_price === amount) return;
-                last_price = amount;
+                if (!ignoreLastPrice && lastPrice === amount) return;
+                lastPrice = amount;
                 $("#response").html('loading...');
                 $.post("currency_rate", $("form#currency_form").serialize(), function() {}).done(
                     function(e) {
@@ -110,8 +110,8 @@
                 );
             }
 
-            $("form#currency_form").keyup(delay(function() { convert() }, 250));
-            $("form#currency_form").on('change', function() { convert() });
+            $("form#currency_form").keyup(delay(function() { convert(false) }, 250));
+            $("form#currency_form").on('change', function() { convert(true) });
         })
     </script>
 </html>
