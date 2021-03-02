@@ -8,10 +8,17 @@ cd services
 docker-compose up
 ```
 
+Run composer:
+```
+docker exec -it currencyX_app composer install
+```
+
 Run migrations:
 ```
 docker exec -it currencyX_app php artisan migrate:fresh 
 ```
+
+Visit: http://127.0.0.1:6256
 
 Run tests:
 ```
