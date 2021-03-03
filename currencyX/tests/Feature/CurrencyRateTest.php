@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Facades\Currency\CurrencyException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Mockery\Exception;
 use Tests\TestCase;
 
 class CurrencyRateTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @return void
      */
